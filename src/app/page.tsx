@@ -20,10 +20,10 @@ export default function RecipeSearch() {
       const response = await fetch(
         `https://api.edamam.com/search?q=${query}&app_id=49ce659f&app_key=6b7bc5238223c6517b9aa06d34425e34`
       );
-      const data = await response.json();
-      setRecipes(data.hits.map((hit: any) => hit.recipe));
+      const data:{ hits: { recipe: Recipe }[] } = await response.json();
+      setRecipes(data.hits.map((hit) => hit.recipe));
       setError('');
-    } catch (err) {
+    } catch {
       setError('Failed to fetch recipes. Please try again.');
     }
   };
