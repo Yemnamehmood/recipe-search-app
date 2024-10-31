@@ -1,100 +1,80 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import React, { useState } from 'react';
+import Image from 'next/image'; 
+
+interface Recipe {
+  label: string;
+  image: string;
+  ingredientLines: string[];
+  url: string;
+}
+
+export default function RecipeSearch() {
+  const [query, setQuery] = useState('');
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [error, setError] = useState('');
+
+  const fetchRecipes = async () => {
+    try {
+      const response = await fetch(
+        `https://api.edamam.com/search?q=${query}&app_id=49ce659f&app_key=6b7bc5238223c6517b9aa06d34425e34`
+      );
+      const data = await response.json();
+      setRecipes(data.hits.map((hit: any) => hit.recipe));
+      setError('');
+    } catch (err) {
+      setError('Failed to fetch recipes. Please try again.');
+    }
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (query) fetchRecipes();
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <div className="container">
+      <h1 className="title">Recipe Search</h1>
+      <form onSubmit={handleSearch} className="searchForm">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Enter ingredient"
+          className="searchInput"
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+        <button type="submit" className="searchButton">Search</button>
+      </form>
+      
+      {error && <p className="error">{error}</p>}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+      <div className="recipeList">
+        {recipes.map((recipe, index) => (
+          <div key={index} className="recipeCard">
+            <h2>{recipe.label}</h2>
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src= "/top-view-different-seasonings-with-raw-pasta-dark-background-product-raw-food-salad-health-diet.jpg"
+              alt={recipe.label}
+              width={300}
+              height={200}
+              className="recipeImage" 
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+            <h3>Ingredients:</h3>
+            <ul>
+              {recipe.ingredientLines.map((ingredient, i) => (
+                <li key={i}>{ingredient}</li>
+              ))}
+            </ul>
+            <a href={recipe.url} target="_blank" rel="noopener noreferrer" className="recipeLink">
+              Full Recipe
+            </a>
+          </div>
+        ))}
+      </div>
+
+      <footer className="footer">
+        &copy; Recipe Search by Yemna Mehmood - All rights reserved
       </footer>
     </div>
   );
