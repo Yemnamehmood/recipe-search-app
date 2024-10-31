@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
 
-First, run the development server:
+# Recipe Search App
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+A simple Recipe Search application built with Next.js, React, and TypeScript, allowing users to search for recipes based on ingredients. This project leverages the [Edamam Recipe API](https://developer.edamam.com/) to fetch recipe data, including ingredients, images, and direct links to the full recipes.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Recipe Search**: Enter an ingredient to fetch recipes from the Edamam API.
+- **Responsive Design**: Styled with Tailwind CSS for a sleek, dark-themed, and mobile-friendly interface.
+- **Error Handling**: Displays error messages for failed API requests.
+- **Next.js Image Optimization**: Utilizes `next/image` for optimized recipe images.
+- **Dynamic Styling**: Hover and interaction effects for a more engaging user experience.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Installation
 
-## Learn More
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/recipe-search-app.git
+   cd recipe-search-app
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Create a `.env.local` file in the root directory and add your Edamam API credentials:
+   ```env
+   NEXT_PUBLIC_EDAMAM_APP_ID=your_app_id
+   NEXT_PUBLIC_EDAMAM_APP_KEY=your_app_key
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-## Deploy on Vercel
+5. Visit `http://localhost:3000` in your browser to use the app.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Usage
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Enter an ingredient in the search bar (e.g., "chicken").
+2. Press **Search** to view a list of recipes containing that ingredient.
+3. Click on a recipe card for more details or on the **Full Recipe** link to view the complete recipe on the source website.
+
+## Technologies Used
+
+- **Next.js**: Framework for server-side rendering and routing.
+- **TypeScript**: Provides static typing for better code reliability.
+- **React**: For building user interfaces.
+- **Tailwind CSS**: Utility-first CSS framework for responsive and dark-themed styling.
+- **Edamam Recipe API**: Used to fetch recipe data based on user search.
+
+
